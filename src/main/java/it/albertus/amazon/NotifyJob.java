@@ -35,7 +35,7 @@ public class NotifyJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		logger.info("Job started at {}" + new Date());
+		logger.info("Job started at {}", new Date());
 		final File urlsFile = new File(URLS_FILE_NAME);
 
 		final Set<String> urls = new HashSet<>();
@@ -65,13 +65,13 @@ public class NotifyJob implements Job {
 				final boolean gzip = responseContentEncoding != null && responseContentEncoding.toLowerCase().contains("gzip");
 				try (final ByteArrayOutputStream baos = new ByteArrayOutputStream(); final InputStream is = gzip ? new GZIPInputStream(conn.getInputStream()) : conn.getInputStream()) {
 					IOUtils.copy(is, baos);
-					logger.info("Response size: {} bytes", baos.size());
+					logger.debug("Response size: {} bytes", baos.size());
 					if (baos.toString("UTF-8").contains("priceblock_dealprice")) {
 						logger.warn("Deal! {}", url);
 						sendMail(url);
 					}
 					else {
-						logger.debug("No deal for {}", url);
+						logger.info("No deal for {}", url);
 					}
 				}
 				catch (final EmailException ee) {
@@ -88,7 +88,7 @@ public class NotifyJob implements Job {
 				break;
 			}
 		}
-		logger.info("Job completed at {}" + new Date());
+		logger.info("Job completed at {}", new Date());
 	}
 
 	private void sendMail(final String url) throws EmailException {
