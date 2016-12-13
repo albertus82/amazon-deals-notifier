@@ -40,19 +40,25 @@ public class NotifyJob implements Job {
 		try (final BufferedReader br = new BufferedReader(new FileReader(urlsFile))) {
 			String line;
 			while ((line = br.readLine()) != null) {
-				urls.add(line.trim());
+				final String trimmed = line.trim();
+				if (!trimmed.isEmpty()) {
+					urls.add(trimmed);
+				}
 			}
 		}
 		catch (final IOException ioe) {
 			throw new RuntimeException(ioe);
 		}
 
+		HttpURLConnection.setFollowRedirects(true);
 		for (final String url : urls) {
 			logger.info("Connecting to: {}", url);
 			try {
 				final HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
 				conn.setConnectTimeout(10000);
 				conn.setReadTimeout(10000);
+				conn.setRequestMethod("GET");
+				conn.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; WiPOSTndows NT 5.0)");
 				conn.addRequestProperty("Accept", "*/*");
 				conn.addRequestProperty("Accept-Encoding", "gzip");
 				final String responseContentEncoding = conn.getHeaderField("Content-Encoding");
@@ -75,7 +81,12 @@ public class NotifyJob implements Job {
 			catch (final IOException ioe) {
 				logger.error("Skipped URL: " + url, ioe);
 			}
-
+			try {
+				Thread.sleep(2000);
+			}
+			catch (final InterruptedException ie) {
+				break;
+			}
 		}
 	}
 
