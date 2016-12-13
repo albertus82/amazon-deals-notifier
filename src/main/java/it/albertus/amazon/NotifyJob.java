@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -34,6 +35,7 @@ public class NotifyJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
+		logger.info("Job started at {}" + new Date());
 		final File urlsFile = new File(URLS_FILE_NAME);
 
 		final Set<String> urls = new HashSet<>();
@@ -80,12 +82,13 @@ public class NotifyJob implements Job {
 				logger.error("Skipped URL: " + url, ioe);
 			}
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(2500);
 			}
 			catch (final InterruptedException ie) {
 				break;
 			}
 		}
+		logger.info("Job completed at {}" + new Date());
 	}
 
 	private void sendMail(final String url) throws EmailException {
@@ -100,7 +103,7 @@ public class NotifyJob implements Job {
 		email.setMsg(url);
 		email.addTo(configuration.getProperty("email.to"));
 		email.send();
-		logger.debug("Email sent");
+		logger.debug("Email sent.");
 	}
 
 }
