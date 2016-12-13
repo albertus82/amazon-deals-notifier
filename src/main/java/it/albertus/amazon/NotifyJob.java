@@ -50,15 +50,13 @@ public class NotifyJob implements Job {
 			throw new RuntimeException(ioe);
 		}
 
-		HttpURLConnection.setFollowRedirects(true);
 		for (final String url : urls) {
 			logger.info("Connecting to: {}", url);
 			try {
 				final HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
 				conn.setConnectTimeout(10000);
 				conn.setReadTimeout(10000);
-				conn.setRequestMethod("GET");
-				conn.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.01; WiPOSTndows NT 5.0)");
+				conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:50.0) Gecko/20100101 Firefox/50.0");
 				conn.addRequestProperty("Accept", "*/*");
 				conn.addRequestProperty("Accept-Encoding", "gzip");
 				final String responseContentEncoding = conn.getHeaderField("Content-Encoding");
