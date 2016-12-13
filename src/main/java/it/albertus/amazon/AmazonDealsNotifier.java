@@ -16,7 +16,7 @@ public class AmazonDealsNotifier {
 	public static final void main(final String... args) throws SchedulerException {
 		final JobDetail job = JobBuilder.newJob(NotifyJob.class).withIdentity("notifyJob").build();
 
-		final Trigger trigger = TriggerBuilder.newTrigger().withIdentity("notifyTrigger").withSchedule(CronScheduleBuilder.cronSchedule("0/15 * * * * ?")).build();
+		final Trigger trigger = TriggerBuilder.newTrigger().withIdentity("notifyTrigger").withSchedule(CronScheduleBuilder.cronSchedule(configuration.getProperties().getProperty("cron"))).build();
 
 		final Scheduler scheduler = new StdSchedulerFactory().getScheduler();
 		scheduler.start();
