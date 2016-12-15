@@ -85,7 +85,7 @@ public class NotifyJob implements Job {
 					logger.debug("Response size: {} bytes", baos.size());
 					if (baos.toString("UTF-8").contains("priceblock_dealprice")) {
 						logger.warn("Deal! {}", productUrl);
-						final NotifyEmail email = new NotifyEmail(emailAddress, "Amazon deal notify", productUrl, null);
+						final NotifyEmail email = new NotifyEmail(emailAddress, "Deal Notify", productUrl, null);
 						emailSender.send(email);
 						logger.debug("Email sent: {}", email);
 					}

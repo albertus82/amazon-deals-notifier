@@ -4,12 +4,18 @@
 	<groupId>it.albertus</groupId>
 	<artifactId>amazon-deals-notifier</artifactId>
 	<version>1.0.0</version>
-	<name>AmazonDealsNotifier</name>
+	<name>Amazon Deals Notifier</name>
 
 	<properties>
 		<date>2016-12-15</date>
 		<jar.name>${project.artifactId}</jar.name>
 		<java.version>1.7</java.version>
+		<java.xms>4</java.xms>
+		<java.xmx>12</java.xmx>
+		<java.MaxMetaspaceSize>16</java.MaxMetaspaceSize>
+		<java.MaxPermSize>16</java.MaxPermSize>
+		<java.ReservedCodeCacheSize>4</java.ReservedCodeCacheSize>
+		<vm.maxHeapSize>16</vm.maxHeapSize>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
@@ -21,6 +27,11 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
+			<resource>
+				<directory>src/main/scripts</directory>
+				<filtering>true</filtering>
+				<targetPath>${project.build.directory}</targetPath>
+			</resource>
 		</resources>
 		<plugins>
 			<plugin>
@@ -28,6 +39,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.6.0</version>
 				<configuration>
+					<encoding>UTF-8</encoding>
 					<source>${maven.compiler.source}</source>
 					<target>${maven.compiler.target}</target>
 				</configuration>
@@ -37,6 +49,7 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.0.2</version>
 				<configuration>
+					<encoding>UTF-8</encoding>
 					<useDefaultDelimiters>true</useDefaultDelimiters>
 				</configuration>
 			</plugin>
