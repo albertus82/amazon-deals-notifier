@@ -1,4 +1,4 @@
-package it.albertus.amazon;
+package it.albertus.util;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -7,17 +7,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class PropertiesConfiguration {
+import it.albertus.jface.preference.PreferencesCallback;
+
+public class PropertiesConfiguration extends PreferencesCallback {
 
 	private final Properties properties;
-	private final String fileName;
 
 	public PropertiesConfiguration(final String propertiesFileName) {
-		this.fileName = propertiesFileName;
+		super(propertiesFileName);
 		this.properties = new Properties();
 		load();
 	}
 
+	@Override
 	public void reload() {
 		load();
 	}
@@ -49,10 +51,6 @@ public class PropertiesConfiguration {
 			}
 			catch (final Exception e) {/* Ignore */}
 		}
-	}
-
-	public String getFileName() {
-		return fileName;
 	}
 
 }

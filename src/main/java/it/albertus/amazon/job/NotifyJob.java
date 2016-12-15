@@ -1,4 +1,4 @@
-package it.albertus.amazon;
+package it.albertus.amazon.job;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -10,33 +10,33 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.SimpleEmail;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import it.albertus.amazon.AmazonDealsNotifier;
+import it.albertus.amazon.email.EmailSender;
+import it.albertus.amazon.email.NotifyEmail;
+import it.albertus.util.Configuration;
+import it.albertus.util.ThreadUtils;
+
 public class NotifyJob implements Job {
 
 	private static final Logger logger = LoggerFactory.getLogger(NotifyJob.class);
-
-	private static final String URLS_FILE_NAME = "urls.txt";
-
-	private final PropertiesConfiguration configuration = AmazonDealsNotifier.configuration;
+	private static final Configuration configuration = AmazonDealsNotifier.configuration;
+	private static final EmailSender emailSender = new EmailSender();
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		logger.info("Job started at {}", new Date());
-		final File urlsFile = new File(URLS_FILE_NAME);
+		final File urlsFile = new File(configuration.getString("urls.filename"));
 
 		final Set<String> urls = new HashSet<>();
 		try (final BufferedReader br = new BufferedReader(new FileReader(urlsFile))) {
@@ -68,7 +68,8 @@ public class NotifyJob implements Job {
 					logger.debug("Response size: {} bytes", baos.size());
 					if (baos.toString("UTF-8").contains("priceblock_dealprice")) {
 						logger.warn("Deal! {}", url);
-						sendMail(url);
+						emailSender.send(new NotifyEmail("Amazon deal", url, null));
+						logger.debug("Email sent.");
 					}
 					else {
 						logger.info("No deal for {}", url);
@@ -81,29 +82,11 @@ public class NotifyJob implements Job {
 			catch (final IOException ioe) {
 				logger.error("Skipped URL: " + url, ioe);
 			}
-			try {
-				Thread.sleep(2500);
-			}
-			catch (final InterruptedException ie) {
+			if (ThreadUtils.sleep(2500) != null) {
 				break;
 			}
 		}
 		logger.info("Job completed at {}", new Date());
-	}
-
-	private void sendMail(final String url) throws EmailException {
-		final Properties configuration = this.configuration.getProperties();
-		final Email email = new SimpleEmail();
-		email.setHostName(configuration.getProperty("email.hostname"));
-		email.setSmtpPort(Integer.parseInt(configuration.getProperty("email.port")));
-		email.setAuthenticator(new DefaultAuthenticator(configuration.getProperty("email.username"), configuration.getProperty("email.password")));
-		email.setSSLOnConnect(Boolean.parseBoolean(configuration.getProperty("email.ssl")));
-		email.setFrom(configuration.getProperty("email.from"));
-		email.setSubject("Amazon deal");
-		email.setMsg(url);
-		email.addTo(configuration.getProperty("email.to"));
-		email.send();
-		logger.debug("Email sent.");
 	}
 
 }
