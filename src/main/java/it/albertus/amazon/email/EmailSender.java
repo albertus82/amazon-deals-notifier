@@ -122,7 +122,7 @@ public class EmailSender {
 			email.addTo(ne.getAddress());
 		}
 		else {
-			final String[] addresses = configuration.getString(CFG_KEY_EMAIL_TO_ADDRESSES).split(EMAIL_ADDRESSES_SPLIT_REGEX);
+			final String[] addresses = configuration.getString(CFG_KEY_EMAIL_TO_ADDRESSES, "").split(EMAIL_ADDRESSES_SPLIT_REGEX);
 			if (addresses.length > 0 && addresses[0] != null && !addresses[0].isEmpty()) {
 				email.addTo(addresses);
 			}

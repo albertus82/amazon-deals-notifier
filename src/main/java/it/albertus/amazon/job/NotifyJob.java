@@ -57,6 +57,7 @@ public class NotifyJob implements Job {
 			throw new RuntimeException(ioe);
 		}
 
+		int i = 0;
 		for (final String element : products) {
 			final String productUrl;
 			final String emailAddress;
@@ -99,8 +100,10 @@ public class NotifyJob implements Job {
 			catch (final IOException ioe) {
 				logger.error("Skipped URL: " + productUrl, ioe);
 			}
-			if (ThreadUtils.sleep(configuration.getLong("get.interval", Defaults.GET_INTERVAL)) != null) {
-				break;
+			if (++i != products.size()) {
+				if (ThreadUtils.sleep(configuration.getLong("get.interval", Defaults.GET_INTERVAL)) != null) {
+					break;
+				}
 			}
 		}
 		logger.info("Job completed at {}", new Date());
