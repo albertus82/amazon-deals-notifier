@@ -1,4 +1,4 @@
-package it.albertus.util;
+package it.albertus.amazon.util;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javax.swing.filechooser.FileSystemView;
-
-import it.albertus.jface.JFaceMessages;
 
 public class Configuration extends PropertiesConfiguration {
 
@@ -364,11 +362,11 @@ public class Configuration extends PropertiesConfiguration {
 	}
 
 	private String getInvalidCharacterErrorMessage(final String key, final Character defaultValue) {
-		final StringBuilder message = new StringBuilder(JFaceMessages.get("err.configuration.invalid.char", key));
+		final StringBuilder message = new StringBuilder(Messages.get("err.configuration.invalid.char", key));
 		if (defaultValue != null) {
-			message.append(' ').append(JFaceMessages.get("err.configuration.using.default", "'" + defaultValue.toString() + "'"));
+			message.append(' ').append(Messages.get("err.configuration.using.default", "'" + defaultValue.toString() + "'"));
 		}
-		return message.append(' ').append(JFaceMessages.get("err.configuration.review", getFileName())).toString();
+		return message.append(' ').append(Messages.get("err.configuration.review", getFileName())).toString();
 	}
 
 	private String getInvalidNumberErrorMessage(final String key) {
@@ -386,15 +384,15 @@ public class Configuration extends PropertiesConfiguration {
 	private String getInvalidNumberErrorMessage(final String key, final Number min, final Number max, final Number defaultValue) {
 		final StringBuilder message = new StringBuilder();
 		if (min != null && max != null) {
-			message.append(JFaceMessages.get("err.configuration.invalid.number", key, min, max));
+			message.append(Messages.get("err.configuration.invalid.number", key, min, max));
 		}
 		else {
-			message.append(JFaceMessages.get("err.configuration.invalid", key));
+			message.append(Messages.get("err.configuration.invalid", key));
 		}
 		if (defaultValue != null) {
-			message.append(' ').append(JFaceMessages.get("err.configuration.using.default", defaultValue));
+			message.append(' ').append(Messages.get("err.configuration.using.default", defaultValue));
 		}
-		return message.append(' ').append(JFaceMessages.get("err.configuration.review", getFileName())).toString();
+		return message.append(' ').append(Messages.get("err.configuration.review", getFileName())).toString();
 	}
 
 	public static boolean parseBoolean(final String value) {

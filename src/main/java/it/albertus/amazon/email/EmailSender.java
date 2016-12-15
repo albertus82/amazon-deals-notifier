@@ -11,8 +11,9 @@ import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
 
 import it.albertus.amazon.AmazonDealsNotifier;
-import it.albertus.util.Configuration;
-import it.albertus.util.ConfigurationException;
+import it.albertus.amazon.util.Configuration;
+import it.albertus.amazon.util.ConfigurationException;
+import it.albertus.amazon.util.Messages;
 
 /** Singleton. */
 public class EmailSender {
@@ -64,16 +65,13 @@ public class EmailSender {
 		return mimeMessageId;
 	}
 
-	private void checkConfiguration() {
+	public static void checkConfiguration() {
 		// Configuration check
 		if (configuration.getString(CFG_KEY_EMAIL_HOST, "").isEmpty()) {
-			throw new ConfigurationException(String.format("Email configuration error. Review your {0} file.", configuration.getFileName()), CFG_KEY_EMAIL_HOST);
+			throw new ConfigurationException(Messages.get("err.configuration.invalid", CFG_KEY_EMAIL_HOST) + ' ' + Messages.get("err.configuration.review", configuration.getFileName()), CFG_KEY_EMAIL_HOST);
 		}
 		if (configuration.getString(CFG_KEY_EMAIL_FROM_ADDRESS, "").isEmpty()) {
-			throw new ConfigurationException(String.format("Email configuration error. Review your {0} file.", configuration.getFileName()), CFG_KEY_EMAIL_FROM_ADDRESS);
-		}
-		if (configuration.getString(CFG_KEY_EMAIL_TO_ADDRESSES, "").isEmpty() && configuration.getString(CFG_KEY_EMAIL_CC_ADDRESSES, "").isEmpty() && configuration.getString(CFG_KEY_EMAIL_BCC_ADDRESSES, "").isEmpty()) {
-			throw new ConfigurationException(String.format("Email configuration error. Review your {0} file.", configuration.getFileName()), CFG_KEY_EMAIL_TO_ADDRESSES);
+			throw new ConfigurationException(Messages.get("err.configuration.invalid", CFG_KEY_EMAIL_FROM_ADDRESS) + ' ' + Messages.get("err.configuration.review", configuration.getFileName()), CFG_KEY_EMAIL_FROM_ADDRESS);
 		}
 	}
 
@@ -111,10 +109,6 @@ public class EmailSender {
 			email.setFrom(configuration.getString(CFG_KEY_EMAIL_FROM_ADDRESS), configuration.getString(CFG_KEY_EMAIL_FROM_NAME));
 		}
 
-		// Recipients
-		if (!configuration.getString(CFG_KEY_EMAIL_TO_ADDRESSES, "").isEmpty()) {
-			email.addTo(configuration.getString(CFG_KEY_EMAIL_TO_ADDRESSES).split(EMAIL_ADDRESSES_SPLIT_REGEX));
-		}
 		if (!configuration.getString(CFG_KEY_EMAIL_CC_ADDRESSES, "").isEmpty()) {
 			email.addCc(configuration.getString(CFG_KEY_EMAIL_CC_ADDRESSES).split(EMAIL_ADDRESSES_SPLIT_REGEX));
 		}
@@ -124,6 +118,15 @@ public class EmailSender {
 	}
 
 	private void createContents(final Email email, final NotifyEmail ne) throws EmailException {
+		if (ne.getAddress() != null) {
+			email.addTo(ne.getAddress());
+		}
+		else {
+			final String[] addresses = configuration.getString(CFG_KEY_EMAIL_TO_ADDRESSES).split(EMAIL_ADDRESSES_SPLIT_REGEX);
+			if (addresses.length > 0 && addresses[0] != null && !addresses[0].isEmpty()) {
+				email.addTo(addresses);
+			}
+		}
 		email.setSubject(ne.getSubject());
 		email.setMsg(ne.getMessage());
 	}

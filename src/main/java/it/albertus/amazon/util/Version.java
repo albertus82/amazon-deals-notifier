@@ -1,4 +1,4 @@
-package it.albertus.util;
+package it.albertus.amazon.util;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -24,8 +24,8 @@ import org.slf4j.LoggerFactory;
 import it.albertus.amazon.AmazonDealsNotifier;
 import it.albertus.amazon.email.EmailSender;
 import it.albertus.amazon.email.NotifyEmail;
-import it.albertus.util.Configuration;
-import it.albertus.util.ThreadUtils;
+import it.albertus.amazon.util.Configuration;
+import it.albertus.amazon.util.ThreadUtils;
 
 public class NotifyJob implements Job {
 
@@ -33,18 +33,23 @@ public class NotifyJob implements Job {
 	private static final Configuration configuration = AmazonDealsNotifier.configuration;
 	private static final EmailSender emailSender = new EmailSender();
 
+	public static class Defaults {
+		public static final long GET_INTERVAL = 2500L;
+		public static final String PRODUCTS_FILENAME = "products.txt";
+	}
+
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		logger.info("Job started at {}", new Date());
-		final File urlsFile = new File(configuration.getString("urls.filename"));
+		final File urlsFile = new File(configuration.getString("products.filename", Defaults.PRODUCTS_FILENAME));
 
-		final Set<String> urls = new HashSet<>();
-		try (final BufferedReader br = new BufferedReader(new FileReader(urlsFile))) {
+		final Set<String> products = new HashSet<>();
+		try (final FileReader fr = new FileReader(urlsFile); final BufferedReader br = new BufferedReader(fr)) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				final String trimmed = line.trim();
 				if (!trimmed.isEmpty()) {
-					urls.add(trimmed);
+					products.add(trimmed);
 				}
 			}
 		}
@@ -52,10 +57,21 @@ public class NotifyJob implements Job {
 			throw new RuntimeException(ioe);
 		}
 
-		for (final String url : urls) {
-			logger.info("Connecting to: {}", url);
+		for (final String element : products) {
+			final String productUrl;
+			final String emailAddress;
+			if (element.indexOf('|') != -1) {
+				productUrl = element.substring(0, element.indexOf("|")).trim();
+				emailAddress = element.substring(element.indexOf("|") + 1);
+			}
+			else {
+				productUrl = element;
+				emailAddress = null;
+			}
+
+			logger.info("Connecting to: {}", productUrl);
 			try {
-				final HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+				final HttpURLConnection conn = (HttpURLConnection) new URL(productUrl).openConnection();
 				conn.setConnectTimeout(10000);
 				conn.setReadTimeout(10000);
 				conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:50.0) Gecko/20100101 Firefox/50.0");
@@ -63,16 +79,17 @@ public class NotifyJob implements Job {
 				conn.addRequestProperty("Accept-Encoding", "gzip");
 				final String responseContentEncoding = conn.getHeaderField("Content-Encoding");
 				final boolean gzip = responseContentEncoding != null && responseContentEncoding.toLowerCase().contains("gzip");
-				try (final ByteArrayOutputStream baos = new ByteArrayOutputStream(); final InputStream is = gzip ? new GZIPInputStream(conn.getInputStream()) : conn.getInputStream()) {
+				try (final InputStream is = gzip ? new GZIPInputStream(conn.getInputStream()) : conn.getInputStream(); final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 					IOUtils.copy(is, baos);
 					logger.debug("Response size: {} bytes", baos.size());
 					if (baos.toString("UTF-8").contains("priceblock_dealprice")) {
-						logger.warn("Deal! {}", url);
-						emailSender.send(new NotifyEmail("Amazon deal", url, null));
-						logger.debug("Email sent.");
+						logger.warn("Deal! {}", productUrl);
+						final NotifyEmail email = new NotifyEmail(emailAddress, "Amazon deal notify", productUrl, null);
+						emailSender.send(email);
+						logger.debug("Email sent: {}", email);
 					}
 					else {
-						logger.info("No deal for {}", url);
+						logger.info("No deal for {}", productUrl);
 					}
 				}
 				catch (final EmailException ee) {
@@ -80,9 +97,9 @@ public class NotifyJob implements Job {
 				}
 			}
 			catch (final IOException ioe) {
-				logger.error("Skipped URL: " + url, ioe);
+				logger.error("Skipped URL: " + productUrl, ioe);
 			}
-			if (ThreadUtils.sleep(2500) != null) {
+			if (ThreadUtils.sleep(configuration.getLong("get.interval", Defaults.GET_INTERVAL)) != null) {
 				break;
 			}
 		}

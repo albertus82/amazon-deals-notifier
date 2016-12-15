@@ -1,4 +1,4 @@
-package it.albertus.jface.preference;
+package it.albertus.amazon.util;
 
 import java.io.IOException;
 

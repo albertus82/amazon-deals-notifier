@@ -1,4 +1,4 @@
-package it.albertus.util;
+package it.albertus.amazon.util;
 
 public class ConfigurationException extends IllegalArgumentException {
 

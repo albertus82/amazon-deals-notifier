@@ -7,6 +7,7 @@
 	<name>AmazonDealsNotifier</name>
 
 	<properties>
+		<date>2016-12-15</date>
 		<jar.name>${project.artifactId}</jar.name>
 		<java.version>1.7</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
@@ -15,6 +16,12 @@
 
 	<build>
 		<finalName>${jar.name}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -23,6 +30,14 @@
 				<configuration>
 					<source>${maven.compiler.source}</source>
 					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<useDefaultDelimiters>true</useDefaultDelimiters>
 				</configuration>
 			</plugin>
 			<plugin>

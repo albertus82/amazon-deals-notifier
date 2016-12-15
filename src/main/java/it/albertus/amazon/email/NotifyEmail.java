@@ -2,18 +2,29 @@ package it.albertus.amazon.email;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NotifyEmail implements Serializable {
 
 	private static final long serialVersionUID = -5241562797785414380L;
 
+	private static final Logger logger = LoggerFactory.getLogger(NotifyEmail.class);
+
 	protected final Date date;
+	protected final String address;
 	protected final String subject;
 	protected final String message;
 	protected final File[] attachments;
 
-	public NotifyEmail(final String subject, final String message, final File[] attachments) {
+	public NotifyEmail(final String address, final String subject, final String message, final File[] attachments) {
+		this.address = address;
+		if (address == null || address.isEmpty()) {
+			logger.warn("No address supplied");
+		}
 		if (message != null && !message.isEmpty()) {
 			this.message = message;
 		}
@@ -27,6 +38,10 @@ public class NotifyEmail implements Serializable {
 
 	public Date getDate() {
 		return date;
+	}
+
+	public String getAddress() {
+		return address;
 	}
 
 	public String getSubject() {
@@ -43,7 +58,7 @@ public class NotifyEmail implements Serializable {
 
 	@Override
 	public String toString() {
-		return "RouterLoggerEmail [date=" + date + ", subject=" + subject + "]";
+		return "NotifyEmail [date=" + date + ", address=" + address + ", subject=" + subject + ", message=" + message + ", attachments=" + Arrays.toString(attachments) + "]";
 	}
 
 }

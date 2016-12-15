@@ -1,4 +1,4 @@
-package it.albertus.jface;
+package it.albertus.amazon.util;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class JFaceMessages {
+public class Messages {
 
 	public enum Language {
 		ENGLISH(Locale.ENGLISH),
@@ -23,7 +23,7 @@ public class JFaceMessages {
 		}
 	}
 
-	private static final String BASE_NAME = JFaceMessages.class.getName().toLowerCase();
+	private static final String BASE_NAME = Messages.class.getName().toLowerCase();
 
 	private static ResourceBundle resources = ResourceBundle.getBundle(BASE_NAME, ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES));
 
@@ -60,6 +60,6 @@ public class JFaceMessages {
 	}
 
 	/** Instantiation not permitted. */
-	private JFaceMessages() {}
+	private Messages() {}
 
 }
