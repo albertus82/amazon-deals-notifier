@@ -32,6 +32,11 @@
 				<filtering>true</filtering>
 				<targetPath>${project.build.directory}</targetPath>
 			</resource>
+			<resource>
+				<directory>src/main/config</directory>
+				<filtering>true</filtering>
+				<targetPath>${project.build.directory}</targetPath>
+			</resource>
 		</resources>
 		<plugins>
 			<plugin>

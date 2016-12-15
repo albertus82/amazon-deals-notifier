@@ -19,7 +19,7 @@ import it.albertus.amazon.util.Version;
 
 public class AmazonDealsNotifier {
 
-	public static final Configuration configuration = new Configuration("application.properties");
+	public static final Configuration configuration = new Configuration("amazon-deals-notifier.cfg");
 
 	private static final Logger logger = LoggerFactory.getLogger(AmazonDealsNotifier.class);
 
