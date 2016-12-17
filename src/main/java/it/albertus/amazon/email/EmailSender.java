@@ -15,7 +15,6 @@ import it.albertus.amazon.util.Configuration;
 import it.albertus.amazon.util.ConfigurationException;
 import it.albertus.amazon.util.Messages;
 
-/** Singleton. */
 public class EmailSender {
 
 	private static final String EMAIL_ADDRESSES_SPLIT_REGEX = "[,;\\s]+";

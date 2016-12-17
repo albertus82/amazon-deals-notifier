@@ -35,6 +35,8 @@ public class NotifyJob implements Job {
 
 	public static class Defaults {
 		public static final long GET_INTERVAL = 2500L;
+		public static final int GET_CONNECT_TIMEOUT = 10000;
+		public static final int GET_READ_TIMEOUT = 10000;
 		public static final String PRODUCTS_FILENAME = "products.txt";
 	}
 
@@ -73,8 +75,8 @@ public class NotifyJob implements Job {
 			logger.info("Connecting to: {}", productUrl);
 			try {
 				final HttpURLConnection conn = (HttpURLConnection) new URL(productUrl).openConnection();
-				conn.setConnectTimeout(10000);
-				conn.setReadTimeout(10000);
+				conn.setConnectTimeout(configuration.getInt("get.connect.timeout", Defaults.GET_CONNECT_TIMEOUT));
+				conn.setReadTimeout(configuration.getInt("get.read.timeout", Defaults.GET_READ_TIMEOUT));
 				conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:50.0) Gecko/20100101 Firefox/50.0");
 				conn.addRequestProperty("Accept", "*/*");
 				conn.addRequestProperty("Accept-Encoding", "gzip");
