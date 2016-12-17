@@ -33,7 +33,12 @@ public class SmtpAppender extends SMTPAppender {
 			}
 
 			// Sender
-			setFrom(sender);
+			if (configuration.getString(EmailSender.CFG_KEY_EMAIL_FROM_NAME, "").isEmpty()) {
+				setFrom(sender);
+			}
+			else {
+				setFrom(configuration.getString(EmailSender.CFG_KEY_EMAIL_FROM_NAME) + " <" + sender + ">");
+			}
 
 			// Recipients
 			for (final String recipient : recipients) {
