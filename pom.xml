@@ -7,8 +7,9 @@
 	<name>Amazon Deals Notifier</name>
 
 	<properties>
-		<date>2016-12-15</date>
+		<date>2016-12-17</date>
 		<jar.name>${project.artifactId}</jar.name>
+		<lib.directory>lib</lib.directory>
 		<java.version>1.7</java.version>
 		<java.xms>4</java.xms>
 		<java.xmx>12</java.xmx>
@@ -80,7 +81,7 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<outputDirectory>${project.build.directory}/${lib.directory}</outputDirectory>
 							<overWriteReleases>false</overWriteReleases>
 							<overWriteSnapshots>false</overWriteSnapshots>
 							<overWriteIfNewer>true</overWriteIfNewer>
@@ -96,7 +97,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<classpathPrefix>lib</classpathPrefix>
+							<classpathPrefix>${lib.directory}</classpathPrefix>
 							<mainClass>it.albertus.amazon.AmazonDealsNotifier</mainClass>
 						</manifest>
 					</archive>
