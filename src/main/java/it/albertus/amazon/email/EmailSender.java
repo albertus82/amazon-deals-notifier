@@ -17,28 +17,33 @@ import it.albertus.amazon.util.Messages;
 
 public class EmailSender {
 
-	private static final String EMAIL_ADDRESSES_SPLIT_REGEX = "[,;\\s]+";
+	public static final String EMAIL_ADDRESSES_SPLIT_REGEX = "[,;\\s]+";
 
-	private static final String CFG_KEY_EMAIL_HOST = "email.host";
-	private static final String CFG_KEY_EMAIL_USERNAME = "email.username";
-	private static final String CFG_KEY_EMAIL_PASSWORD = "email.password";
-	private static final String CFG_KEY_EMAIL_FROM_NAME = "email.from.name";
-	private static final String CFG_KEY_EMAIL_FROM_ADDRESS = "email.from.address";
-	private static final String CFG_KEY_EMAIL_TO_ADDRESSES = "email.to.addresses";
-	private static final String CFG_KEY_EMAIL_CC_ADDRESSES = "email.cc.addresses";
-	private static final String CFG_KEY_EMAIL_BCC_ADDRESSES = "email.bcc.addresses";
+	public static final String CFG_KEY_EMAIL_HOST = "email.host";
+	public static final String CFG_KEY_EMAIL_USERNAME = "email.username";
+	public static final String CFG_KEY_EMAIL_PASSWORD = "email.password";
+	public static final String CFG_KEY_EMAIL_FROM_NAME = "email.from.name";
+	public static final String CFG_KEY_EMAIL_FROM_ADDRESS = "email.from.address";
+	public static final String CFG_KEY_EMAIL_TO_ADDRESSES = "email.to.addresses";
+	public static final String CFG_KEY_EMAIL_CC_ADDRESSES = "email.cc.addresses";
+	public static final String CFG_KEY_EMAIL_BCC_ADDRESSES = "email.bcc.addresses";
+	public static final String CFG_KEY_EMAIL_PORT = "email.port";
+	public static final String CFG_KEY_EMAIL_SSL_CONNECT = "email.ssl.connect";
+	public static final String CFG_KEY_EMAIL_SSL_PORT = "email.ssl.port";
+	public static final String CFG_KEY_EMAIL_STARTTLS_ENABLED = "email.starttls.enabled";
+	public static final String CFG_KEY_EMAIL_STARTTLS_REQUIRED = "email.starttls.required";
 
 	private static final Configuration configuration = AmazonDealsNotifier.configuration;
 
 	public static class Defaults {
-		private static final int PORT = 25;
-		private static final int SSL_PORT = 465;
-		private static final boolean SSL_CONNECT = false;
-		private static final boolean SSL_IDENTITY = false;
-		private static final boolean STARTTLS_ENABLED = false;
-		private static final boolean STARTTLS_REQUIRED = false;
-		private static final int SOCKET_TIMEOUT = EmailConstants.SOCKET_TIMEOUT_MS;
-		private static final int SOCKET_CONNECTION_TIMEOUT = EmailConstants.SOCKET_TIMEOUT_MS;
+		public static final int PORT = 25;
+		public static final int SSL_PORT = 465;
+		public static final boolean SSL_CONNECT = false;
+		public static final boolean SSL_IDENTITY = false;
+		public static final boolean STARTTLS_ENABLED = false;
+		public static final boolean STARTTLS_REQUIRED = false;
+		public static final int SOCKET_TIMEOUT = EmailConstants.SOCKET_TIMEOUT_MS;
+		public static final int SOCKET_CONNECTION_TIMEOUT = EmailConstants.SOCKET_TIMEOUT_MS;
 
 		private Defaults() {
 			throw new IllegalAccessError("Constants class");
@@ -86,12 +91,12 @@ public class EmailSender {
 	private void initializeEmail(final Email email) throws EmailException {
 		email.setSocketConnectionTimeout(configuration.getInt("email.connection.timeout", Defaults.SOCKET_CONNECTION_TIMEOUT));
 		email.setSocketTimeout(configuration.getInt("email.socket.timeout", Defaults.SOCKET_TIMEOUT));
-		email.setStartTLSEnabled(configuration.getBoolean("email.starttls.enabled", Defaults.STARTTLS_ENABLED));
-		email.setStartTLSRequired(configuration.getBoolean("email.starttls.required", Defaults.STARTTLS_REQUIRED));
+		email.setStartTLSEnabled(configuration.getBoolean(CFG_KEY_EMAIL_STARTTLS_ENABLED, Defaults.STARTTLS_ENABLED));
+		email.setStartTLSRequired(configuration.getBoolean(CFG_KEY_EMAIL_STARTTLS_REQUIRED, Defaults.STARTTLS_REQUIRED));
 		email.setSSLCheckServerIdentity(configuration.getBoolean("email.ssl.identity", Defaults.SSL_IDENTITY));
-		email.setSSLOnConnect(configuration.getBoolean("email.ssl.connect", Defaults.SSL_CONNECT));
-		email.setSmtpPort(configuration.getInt("email.port", Defaults.PORT));
-		email.setSslSmtpPort(Integer.toString(configuration.getInt("email.ssl.port", Defaults.SSL_PORT)));
+		email.setSSLOnConnect(configuration.getBoolean(CFG_KEY_EMAIL_SSL_CONNECT, Defaults.SSL_CONNECT));
+		email.setSmtpPort(configuration.getInt(CFG_KEY_EMAIL_PORT, Defaults.PORT));
+		email.setSslSmtpPort(Integer.toString(configuration.getInt(CFG_KEY_EMAIL_SSL_PORT, Defaults.SSL_PORT)));
 
 		email.setHostName(configuration.getString(CFG_KEY_EMAIL_HOST));
 

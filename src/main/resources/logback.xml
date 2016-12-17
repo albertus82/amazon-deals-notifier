@@ -11,9 +11,8 @@
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>log/${artifactId}.log</file>
 
-		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-			<fileNamePattern>log/${artifactId}.%d{yyyy-MM-dd}_%i.log.zip</fileNamePattern>
-			<maxFileSize>25MB</maxFileSize>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>log/${artifactId}.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
 			<maxHistory>30</maxHistory>
 			<totalSizeCap>100MB</totalSizeCap>
 		</rollingPolicy>
@@ -27,9 +26,17 @@
 		</filter>
 	</appender>
 
+	<appender name="EMAIL" class="it.albertus.amazon.log.SmtpAppender">
+		<subject>${name}: %logger - %msg</subject>
+		  <layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{dd/MM/yyyy HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+		</layout>
+	</appender>
+
 	<root level="DEBUG">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
+		<appender-ref ref="EMAIL" />
 	</root>
 
 </configuration>
