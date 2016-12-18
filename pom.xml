@@ -16,7 +16,6 @@
 		<java.MaxMetaspaceSize>16</java.MaxMetaspaceSize>
 		<java.MaxPermSize>16</java.MaxPermSize>
 		<java.ReservedCodeCacheSize>4</java.ReservedCodeCacheSize>
-		<vm.maxHeapSize>16</vm.maxHeapSize>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
