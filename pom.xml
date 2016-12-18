@@ -5,7 +5,7 @@
 	<artifactId>amazon-deals-notifier</artifactId>
 	<version>1.0.0</version>
 	<name>Amazon Deals Notifier</name>
-
+ 
 	<properties>
 		<date>2016-12-18</date>
 		<jar.name>${project.artifactId}</jar.name>
