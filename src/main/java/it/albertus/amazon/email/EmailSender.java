@@ -11,9 +11,9 @@ import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
 
 import it.albertus.amazon.AmazonDealsNotifier;
-import it.albertus.amazon.util.Configuration;
-import it.albertus.amazon.util.ConfigurationException;
 import it.albertus.amazon.util.Messages;
+import it.albertus.util.Configuration;
+import it.albertus.util.ConfigurationException;
 
 public class EmailSender {
 
@@ -65,8 +65,7 @@ public class EmailSender {
 		}
 		initializeEmail(email);
 		createContents(email, ne);
-		final String mimeMessageId = email.send();
-		return mimeMessageId;
+		return email.send();
 	}
 
 	public static void checkConfiguration() {

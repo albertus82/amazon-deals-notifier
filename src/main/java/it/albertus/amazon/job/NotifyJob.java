@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.io.IOUtils;
@@ -24,8 +25,7 @@ import org.slf4j.LoggerFactory;
 import it.albertus.amazon.AmazonDealsNotifier;
 import it.albertus.amazon.email.EmailSender;
 import it.albertus.amazon.email.NotifyEmail;
-import it.albertus.amazon.util.Configuration;
-import it.albertus.amazon.util.ThreadUtils;
+import it.albertus.util.Configuration;
 
 public class NotifyJob implements Job {
 
@@ -38,6 +38,10 @@ public class NotifyJob implements Job {
 		public static final int GET_CONNECT_TIMEOUT = 10000;
 		public static final int GET_READ_TIMEOUT = 10000;
 		public static final String PRODUCTS_FILENAME = "products.txt";
+
+		private Defaults() {
+			throw new IllegalAccessError("Constants class");
+		}
 	}
 
 	@Override
@@ -64,8 +68,8 @@ public class NotifyJob implements Job {
 			final String productUrl;
 			final String emailAddress;
 			if (element.indexOf('|') != -1) {
-				productUrl = element.substring(0, element.indexOf("|")).trim();
-				emailAddress = element.substring(element.indexOf("|") + 1);
+				productUrl = element.substring(0, element.indexOf('|')).trim();
+				emailAddress = element.substring(element.indexOf('|') + 1);
 			}
 			else {
 				productUrl = element;
@@ -103,7 +107,11 @@ public class NotifyJob implements Job {
 				logger.error("Skipped URL: " + productUrl, ioe);
 			}
 			if (++i != products.size()) {
-				if (ThreadUtils.sleep(configuration.getLong("get.interval", Defaults.GET_INTERVAL)) != null) {
+				try {
+					TimeUnit.MILLISECONDS.sleep(configuration.getLong("get.interval", Defaults.GET_INTERVAL));
+				}
+				catch (final InterruptedException e) {
+					Thread.currentThread().interrupt();
 					break;
 				}
 			}

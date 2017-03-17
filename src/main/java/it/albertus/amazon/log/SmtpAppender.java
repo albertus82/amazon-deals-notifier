@@ -4,7 +4,7 @@ import ch.qos.logback.classic.net.SMTPAppender;
 import it.albertus.amazon.AmazonDealsNotifier;
 import it.albertus.amazon.email.EmailSender;
 import it.albertus.amazon.email.EmailSender.Defaults;
-import it.albertus.amazon.util.Configuration;
+import it.albertus.util.Configuration;
 
 public class SmtpAppender extends SMTPAppender {
 

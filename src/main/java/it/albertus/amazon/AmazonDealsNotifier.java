@@ -1,5 +1,7 @@
 package it.albertus.amazon;
 
+import java.io.IOException;
+
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -13,15 +15,28 @@ import org.slf4j.LoggerFactory;
 
 import it.albertus.amazon.email.EmailSender;
 import it.albertus.amazon.job.NotifyJob;
-import it.albertus.amazon.util.Configuration;
 import it.albertus.amazon.util.Messages;
-import it.albertus.amazon.util.Version;
+import it.albertus.util.Configuration;
+import it.albertus.util.Version;
 
 public class AmazonDealsNotifier {
 
-	public static final Configuration configuration = new Configuration("amazon-deals-notifier.cfg");
+	public static final Configuration configuration;
 
 	private static final Logger logger = LoggerFactory.getLogger(AmazonDealsNotifier.class);
+
+	private AmazonDealsNotifier() {
+		throw new IllegalAccessError();
+	}
+
+	static {
+		try {
+			configuration = new Configuration("amazon-deals-notifier.cfg");
+		}
+		catch (final IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	public static final void main(final String... args) throws SchedulerException {
 		logger.info(Messages.get("msg.application.name") + ' ' + Version.getInstance().getNumber());
