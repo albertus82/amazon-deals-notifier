@@ -8,10 +8,9 @@ import it.albertus.util.Configuration;
 
 public class SmtpAppender extends SMTPAppender {
 
-	private static final Configuration configuration = AmazonDealsNotifier.configuration;
-
 	@Override
 	public void start() {
+		final Configuration configuration = AmazonDealsNotifier.configuration;
 		final String host = configuration.getString(EmailSender.CFG_KEY_EMAIL_HOST);
 		final String sender = configuration.getString(EmailSender.CFG_KEY_EMAIL_FROM_ADDRESS);
 		final String[] recipients = configuration.getString("email.log.addresses", "").split(EmailSender.EMAIL_ADDRESSES_SPLIT_REGEX);
