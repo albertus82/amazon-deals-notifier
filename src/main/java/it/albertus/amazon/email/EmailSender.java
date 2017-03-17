@@ -10,7 +10,7 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
 
-import it.albertus.amazon.AmazonDealsNotifier;
+import it.albertus.amazon.util.NotifierConfiguration;
 import it.albertus.amazon.util.Messages;
 import it.albertus.util.Configuration;
 import it.albertus.util.ConfigurationException;
@@ -33,7 +33,7 @@ public class EmailSender {
 	public static final String CFG_KEY_EMAIL_STARTTLS_ENABLED = "email.starttls.enabled";
 	public static final String CFG_KEY_EMAIL_STARTTLS_REQUIRED = "email.starttls.required";
 
-	private static final Configuration configuration = AmazonDealsNotifier.configuration;
+	private static final Configuration configuration = NotifierConfiguration.getInstance();
 
 	public static class Defaults {
 		public static final int PORT = 25;
@@ -48,6 +48,17 @@ public class EmailSender {
 		private Defaults() {
 			throw new IllegalAccessError("Constants class");
 		}
+	}
+
+	private static EmailSender emailSender;
+
+	private EmailSender() {}
+
+	public static synchronized EmailSender getInstance() {
+		if (emailSender == null) {
+			emailSender = new EmailSender();
+		}
+		return emailSender;
 	}
 
 	public String send(final NotifyEmail ne) throws EmailException {

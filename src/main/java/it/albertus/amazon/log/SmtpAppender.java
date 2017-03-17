@@ -1,16 +1,17 @@
 package it.albertus.amazon.log;
 
 import ch.qos.logback.classic.net.SMTPAppender;
-import it.albertus.amazon.AmazonDealsNotifier;
 import it.albertus.amazon.email.EmailSender;
 import it.albertus.amazon.email.EmailSender.Defaults;
+import it.albertus.amazon.util.NotifierConfiguration;
 import it.albertus.util.Configuration;
 
 public class SmtpAppender extends SMTPAppender {
 
+	private static final Configuration configuration = NotifierConfiguration.getInstance();
+
 	@Override
 	public void start() {
-		final Configuration configuration = AmazonDealsNotifier.configuration;
 		final String host = configuration.getString(EmailSender.CFG_KEY_EMAIL_HOST);
 		final String sender = configuration.getString(EmailSender.CFG_KEY_EMAIL_FROM_ADDRESS);
 		final String[] recipients = configuration.getString("email.log.addresses", "").split(EmailSender.EMAIL_ADDRESSES_SPLIT_REGEX);

@@ -21,17 +21,19 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import it.albertus.amazon.AmazonDealsNotifier;
 import it.albertus.amazon.email.EmailSender;
 import it.albertus.amazon.email.NotifyEmail;
+import it.albertus.amazon.util.NotifierConfiguration;
 import it.albertus.util.Configuration;
 import it.albertus.util.IOUtils;
 
 public class NotifyJob implements Job {
 
 	private static final Logger logger = LoggerFactory.getLogger(NotifyJob.class);
-	private static final Configuration configuration = AmazonDealsNotifier.configuration;
-	private static final EmailSender emailSender = new EmailSender();
+
+	private static final Configuration configuration = NotifierConfiguration.getInstance();
+
+	private static final EmailSender emailSender = EmailSender.getInstance();
 
 	private static final int BUFFER_SIZE = 1024 * 4;
 
