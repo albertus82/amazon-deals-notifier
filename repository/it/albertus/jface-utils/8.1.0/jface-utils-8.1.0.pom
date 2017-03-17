@@ -5,4 +5,5 @@
   <groupId>it.albertus</groupId>
   <artifactId>jface-utils</artifactId>
   <version>8.1.0</version>
+  <description>POM was created from install:install-file</description>
 </project>

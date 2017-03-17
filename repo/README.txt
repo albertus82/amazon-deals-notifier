@@ -1,1 +1,0 @@
-mvn deploy:deploy-file -Durl=file:///.../AmazonDealsNotifier/repo/ -Dfile=./jface-utils-8.1.0.jar -Dsources=./jface-utils-8.1.0-sources.jar -DgroupId=it.albertus -DartifactId=jface-utils -Dpackaging=jar -Dversion=8.1.0
