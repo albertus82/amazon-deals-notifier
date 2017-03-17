@@ -7,7 +7,7 @@
 	<name>Amazon Deals Notifier</name>
 
 	<properties>
-		<date>2016-12-18</date>
+		<date>2017-03-17</date>
 		<jar.name>${project.artifactId}</jar.name>
 		<lib.directory>lib</lib.directory>
 		<java.version>1.7</java.version>
@@ -107,8 +107,7 @@
 
 	<repositories>
 		<repository>
-			<id>project.local</id>
-			<name>project</name>
+			<id>${project.artifactId}-repo</id>
 			<url>file:${project.basedir}/repository</url>
 		</repository>
 	</repositories>
@@ -117,18 +116,22 @@
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>2.2.1</version>
+			<version>2.2.3</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>c3p0</artifactId>
 					<groupId>c3p0</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz-jobs</artifactId>
-			<version>2.2.1</version>
+			<version>2.2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -153,14 +156,9 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<artifactId>slf4j-api</artifactId>
-			<groupId>org.slf4j</groupId>
-			<version>1.7.25</version>
-		</dependency>
-		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.1.8</version>
+			<version>1.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>it.albertus</groupId>
