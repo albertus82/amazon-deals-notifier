@@ -14,7 +14,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.mail.EmailException;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -26,12 +25,15 @@ import it.albertus.amazon.AmazonDealsNotifier;
 import it.albertus.amazon.email.EmailSender;
 import it.albertus.amazon.email.NotifyEmail;
 import it.albertus.util.Configuration;
+import it.albertus.util.IOUtils;
 
 public class NotifyJob implements Job {
 
 	private static final Logger logger = LoggerFactory.getLogger(NotifyJob.class);
 	private static final Configuration configuration = AmazonDealsNotifier.configuration;
 	private static final EmailSender emailSender = new EmailSender();
+
+	private static final int BUFFER_SIZE = 1024 * 4;
 
 	public static class Defaults {
 		public static final long GET_INTERVAL = 2500L;
@@ -87,7 +89,7 @@ public class NotifyJob implements Job {
 				final String responseContentEncoding = conn.getHeaderField("Content-Encoding");
 				final boolean gzip = responseContentEncoding != null && responseContentEncoding.toLowerCase().contains("gzip");
 				try (final InputStream is = gzip ? new GZIPInputStream(conn.getInputStream()) : conn.getInputStream(); final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-					IOUtils.copy(is, baos);
+					IOUtils.copy(is, baos, BUFFER_SIZE);
 					logger.debug("Response size: {} bytes", baos.size());
 					if (baos.toString("UTF-8").contains("priceblock_dealprice")) {
 						logger.warn("Deal! {}", productUrl);
