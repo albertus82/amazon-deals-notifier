@@ -18,6 +18,9 @@ cache:
   - $(ChocolateyInstall)\bin -> .appveyor.yml
   - $(HOMEDRIVE)$(HOMEPATH)\.m2 -> .appveyor.yml
 
+init:
+  - ps: Date
+
 install:
   - ps: cinst maven -i --version $env:MVN_VERSION
 
@@ -28,3 +31,6 @@ before_build:
 
 build_script:
   - mvn clean package
+
+on_finish:
+  - ps: Date
