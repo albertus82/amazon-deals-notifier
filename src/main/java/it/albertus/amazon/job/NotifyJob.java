@@ -39,8 +39,8 @@ public class NotifyJob implements Job {
 
 	public static class Defaults {
 		public static final long GET_INTERVAL = 2500L;
-		public static final int GET_CONNECT_TIMEOUT = 10000;
-		public static final int GET_READ_TIMEOUT = 10000;
+		public static final int GET_CONNECT_TIMEOUT = 20000;
+		public static final int GET_READ_TIMEOUT = 20000;
 		public static final String PRODUCTS_FILENAME = "products.txt";
 
 		private Defaults() {
