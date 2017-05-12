@@ -7,7 +7,7 @@
 	<name>Amazon Deals Notifier</name>
 
 	<properties>
-		<date>2017-04-20</date>
+		<date>2017-05-12</date>
 		<jar.name>${project.artifactId}</jar.name>
 		<lib.directory>lib</lib.directory>
 		<java.version>1.7</java.version>
@@ -164,7 +164,7 @@
 		<dependency>
 			<groupId>it.albertus</groupId>
 			<artifactId>jface-utils</artifactId>
-			<version>8.1.0</version>
+			<version>9.0.0</version>
 		</dependency>
 	</dependencies>
 

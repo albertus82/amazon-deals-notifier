@@ -4,6 +4,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>it.albertus</groupId>
   <artifactId>jface-utils</artifactId>
-  <version>8.1.0</version>
+  <version>9.0.0</version>
   <description>POM was created from install:install-file</description>
 </project>
