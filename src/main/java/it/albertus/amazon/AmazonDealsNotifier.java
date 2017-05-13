@@ -22,22 +22,27 @@ public class AmazonDealsNotifier {
 
 	private static final Logger logger = LoggerFactory.getLogger(AmazonDealsNotifier.class);
 
-	private static final Configuration configuration = NotifierConfiguration.getInstance();
-
 	private AmazonDealsNotifier() {
 		throw new IllegalAccessError();
 	}
 
 	public static final void main(final String... args) throws SchedulerException {
 		logger.info(Messages.get("msg.application.name") + ' ' + Version.getInstance().getNumber());
-		EmailSender.checkConfiguration();
+		try {
+			final Configuration configuration = NotifierConfiguration.getInstance();
+			EmailSender.checkConfiguration();
 
-		final JobDetail job = JobBuilder.newJob(NotifyJob.class).withIdentity("notifyJob").build();
-		final Trigger trigger = TriggerBuilder.newTrigger().withIdentity("notifyTrigger").withSchedule(CronScheduleBuilder.cronSchedule(configuration.getProperties().getProperty("cron"))).build();
-		final Scheduler scheduler = new StdSchedulerFactory().getScheduler();
+			final JobDetail job = JobBuilder.newJob(NotifyJob.class).withIdentity("notifyJob").build();
+			final Trigger trigger = TriggerBuilder.newTrigger().withIdentity("notifyTrigger").withSchedule(CronScheduleBuilder.cronSchedule(configuration.getProperties().getProperty("cron"))).build();
+			final Scheduler scheduler = new StdSchedulerFactory().getScheduler();
 
-		scheduler.start();
-		scheduler.scheduleJob(job, trigger);
+			scheduler.start();
+			scheduler.scheduleJob(job, trigger);
+		}
+		catch (final Exception e) {
+			logger.error(e.toString(), e);
+			throw e;
+		}
 	}
 
 }
