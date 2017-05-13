@@ -18,7 +18,6 @@ environment:
 cache:
   - $(ChocolateyInstall)\lib -> .appveyor.yml
   - $(ChocolateyInstall)\bin -> .appveyor.yml
-  - $(HOMEDRIVE)$(HOMEPATH)\.m2 -> .appveyor.yml
 
 install:
   - ps: cinst maven -i --version $env:MVN_VERSION
