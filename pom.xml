@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.albertus</groupId>
 	<artifactId>amazon-deals-notifier</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>Amazon Deals Notifier</name>
 
 	<properties>
-		<date>2017-05-14</date>
+		<date>2017-05-16</date>
 		<jar.name>${project.artifactId}</jar.name>
 		<lib.directory>lib</lib.directory>
 		<java.version>1.7</java.version>
@@ -149,8 +149,8 @@
 
 	<repositories>
 		<repository>
-			<id>${project.artifactId}-repo</id>
-			<url>file:${project.basedir}/repository</url>
+			<id>jface-utils-repo</id>
+			<url>https://raw.githubusercontent.com/Albertus82/JFaceUtils/master/mvn-repo</url>
 		</repository>
 	</repositories>
 
@@ -205,7 +205,7 @@
 		<dependency>
 			<groupId>it.albertus</groupId>
 			<artifactId>jface-utils</artifactId>
-			<version>9.0.0</version>
+			<version>9.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
