@@ -151,10 +151,10 @@
 					<execution>
 						<phase>package</phase>
 						<configuration>
+							<failOnError>false</failOnError>
 							<target>
 								<chmod perm="+x"
-									file="${project.build.directory}/${project.artifactId}.sh"
-									failonerror="false" failifexecutionfails="false" ignoremissing="true" />
+									file="${project.build.directory}/${project.artifactId}.sh" />
 							</target>
 						</configuration>
 						<goals>
