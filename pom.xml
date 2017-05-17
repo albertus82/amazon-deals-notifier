@@ -10,14 +10,13 @@
 		<version.date>2017-05-17</version.date>
 		<jar.name>${project.artifactId}</jar.name>
 		<lib.directory>lib</lib.directory>
-		<java.version>1.7</java.version>
 		<java.xms>4</java.xms>
 		<java.xmx>12</java.xmx>
 		<java.MaxMetaspaceSize>16</java.MaxMetaspaceSize>
 		<java.MaxPermSize>16</java.MaxPermSize>
 		<java.ReservedCodeCacheSize>4</java.ReservedCodeCacheSize>
-		<compile.source.jdk>${java.version}</compile.source.jdk>
-		<compile.target.jdk>${java.version}</compile.target.jdk>
+		<compile.source.jdk>1.7</compile.source.jdk>
+		<compile.target.jdk>1.7</compile.target.jdk>
 	</properties>
 
 	<profiles>
@@ -59,6 +58,68 @@
 				</pluginManagement>
 			</build>
 		</profile>
+		<profile>
+			<id>unix</id>
+			<activation>
+				<os>
+					<family>unix</family>
+				</os>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/scripts</directory>
+						<filtering>true</filtering>
+						<includes>
+							<include>*.sh</include>
+						</includes>
+						<targetPath>${project.build.directory}</targetPath>
+					</resource>
+				</resources>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<configuration>
+									<failOnError>false</failOnError>
+									<target>
+										<chmod perm="+x"
+											file="${project.build.directory}/${project.artifactId}.sh" />
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/scripts</directory>
+						<filtering>true</filtering>
+						<includes>
+							<include>*.bat</include>
+						</includes>
+						<targetPath>${project.build.directory}</targetPath>
+					</resource>
+				</resources>
+			</build>
+		</profile>
 	</profiles>
 
 	<build>
@@ -67,11 +128,6 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
-			</resource>
-			<resource>
-				<directory>src/main/scripts</directory>
-				<filtering>true</filtering>
-				<targetPath>${project.build.directory}</targetPath>
 			</resource>
 			<resource>
 				<directory>src/main/config</directory>
@@ -140,26 +196,6 @@
 						</manifest>
 					</archive>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.8</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<configuration>
-							<failOnError>false</failOnError>
-							<target>
-								<chmod perm="+x"
-									file="${project.build.directory}/${project.artifactId}.sh" />
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
