@@ -7,7 +7,7 @@
 	<name>Amazon Deals Notifier</name>
 
 	<properties>
-		<date>2017-05-17</date>
+		<version.date>2017-05-17</version.date>
 		<jar.name>${project.artifactId}</jar.name>
 		<lib.directory>lib</lib.directory>
 		<java.version>1.7</java.version>
@@ -16,8 +16,8 @@
 		<java.MaxMetaspaceSize>16</java.MaxMetaspaceSize>
 		<java.MaxPermSize>16</java.MaxPermSize>
 		<java.ReservedCodeCacheSize>4</java.ReservedCodeCacheSize>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<compile.source.jdk>${java.version}</compile.source.jdk>
+		<compile.target.jdk>${java.version}</compile.target.jdk>
 	</properties>
 
 	<profiles>
@@ -86,8 +86,8 @@
 				<version>3.6.1</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
+					<source>${compile.source.jdk}</source>
+					<target>${compile.target.jdk}</target>
 				</configuration>
 			</plugin>
 			<plugin>
