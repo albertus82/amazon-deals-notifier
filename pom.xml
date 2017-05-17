@@ -7,7 +7,7 @@
 	<name>Amazon Deals Notifier</name>
 
 	<properties>
-		<date>2017-05-16</date>
+		<date>2017-05-17</date>
 		<jar.name>${project.artifactId}</jar.name>
 		<lib.directory>lib</lib.directory>
 		<java.version>1.7</java.version>
@@ -143,6 +143,25 @@
 						</manifest>
 					</archive>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<chmod perm="+x"
+									file="${project.build.directory}/${project.artifactId}.sh"
+									failonerror="false" failifexecutionfails="false" ignoremissing="true" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
