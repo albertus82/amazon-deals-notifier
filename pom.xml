@@ -7,7 +7,7 @@
 	<name>Amazon Deals Notifier</name>
 
 	<properties>
-		<version.date>2017-05-17</version.date>
+		<version.date>2017-05-18</version.date>
 		<jar.name>${project.artifactId}</jar.name>
 		<lib.directory>lib</lib.directory>
 		<java.xms>4</java.xms>
@@ -59,6 +59,26 @@
 			</build>
 		</profile>
 		<profile>
+			<id>windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/scripts</directory>
+						<filtering>true</filtering>
+						<includes>
+							<include>*.bat</include>
+						</includes>
+						<targetPath>${project.build.directory}</targetPath>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<profile>
 			<id>unix</id>
 			<activation>
 				<os>
@@ -76,35 +96,13 @@
 						<targetPath>${project.build.directory}</targetPath>
 					</resource>
 				</resources>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.8</version>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<configuration>
-									<failOnError>false</failOnError>
-									<target>
-										<chmod perm="+x"
-											file="${project.build.directory}/${project.artifactId}.sh" />
-									</target>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
 			</build>
 		</profile>
 		<profile>
-			<id>windows</id>
+			<id>mac</id>
 			<activation>
 				<os>
-					<family>windows</family>
+					<family>mac</family>
 				</os>
 			</activation>
 			<build>
@@ -113,7 +111,7 @@
 						<directory>src/main/scripts</directory>
 						<filtering>true</filtering>
 						<includes>
-							<include>*.bat</include>
+							<include>*.command</include>
 						</includes>
 						<targetPath>${project.build.directory}</targetPath>
 					</resource>
@@ -196,6 +194,28 @@
 						</manifest>
 					</archive>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<failOnError>false</failOnError>
+							<target>
+								<chmod perm="+x"
+									file="${project.build.directory}/${project.artifactId}.sh" />
+								<chmod perm="+x"
+									file="${project.build.directory}/${project.artifactId}.command" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

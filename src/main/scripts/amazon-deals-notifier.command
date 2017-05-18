@@ -1,0 +1,1 @@
+java -Xms${java.xms}m -Xmx${java.xmx}m -XX:MaxMetaspaceSize=${java.MaxMetaspaceSize}m -XX:MaxPermSize=${java.MaxPermSize}m -XX:ReservedCodeCacheSize=${java.ReservedCodeCacheSize}m -jar "`dirname $0`/${artifactId}.jar" > /dev/null &
