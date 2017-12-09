@@ -224,8 +224,8 @@
 
 	<repositories>
 		<repository>
-			<id>jface-utils-repo</id>
-			<url>https://raw.githubusercontent.com/Albertus82/JFaceUtils/master/mvn-repo</url>
+			<id>albertus82-github</id>
+			<url>https://raw.githubusercontent.com/albertus82/maven/master</url>
 		</repository>
 	</repositories>
 
@@ -280,7 +280,7 @@
 		<dependency>
 			<groupId>it.albertus</groupId>
 			<artifactId>jface-utils</artifactId>
-			<version>9.0.0-SNAPSHOT</version>
+			<version>12.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
