@@ -7,7 +7,7 @@
 	<name>Amazon Deals Notifier</name>
 
 	<properties>
-		<version.date>2017-05-18</version.date>
+		<version.date>2017-08-09</version.date>
 		<jar.name>${project.artifactId}</jar.name>
 		<lib.directory>lib</lib.directory>
 		<java.xms>4</java.xms>
@@ -185,7 +185,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.6</version>
+				<version>3.0.2</version>
 				<configuration>
 					<archive>
 						<manifest>
