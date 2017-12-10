@@ -225,7 +225,7 @@
 	<repositories>
 		<repository>
 			<id>albertus82-github</id>
-			<url>https://raw.githubusercontent.com/albertus82/maven/master</url>
+			<url>https://albertus82.github.io/maven</url>
 		</repository>
 	</repositories>
 
