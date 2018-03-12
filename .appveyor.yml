@@ -15,13 +15,12 @@ environment:
     - platform: x64
       JAVA_HOME: $(ProgramFiles)\Java\jdk1.8.0
     - platform: x64
-      JAVA_HOME: $(ChocolateyInstall)\lib\jvm\jdk9
+      JAVA_HOME: $(ProgramFiles)\Java\jdk9
 
 cache:
   - $(ChocolateyInstall)\lib\maven -> .appveyor.yml
 
 install:
-  - ps: If ($env:JAVA_HOME -eq ($env:ChocolateyInstall + '\lib\jvm\jdk9')) { cinst jdk9 -i -params 'installdir=C:\\ProgramData\\chocolatey\\lib\\jvm\\jdk9' }
   - ps: cinst maven -i --version $env:MVN_VERSION
   - cmd: PATH %ChocolateyInstall%\lib\maven\apache-maven-%MVN_VERSION%\bin;%JAVA_HOME%\bin;%PATH%
 
